@@ -1,7 +1,8 @@
 import { Switch } from '@headlessui/react';
-import { EllipsisVerticalIcon, PencilIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
-import React, { useState } from 'react'
+import { EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react'
 import DeleteLinkModal from './deleteLinkModal';
+import EditLinkModal from './editLinkModal';
 
 type Props = {
     id: string;
@@ -10,10 +11,13 @@ type Props = {
     isVisible: boolean;
 }
 
+type OpenModal = 'edit' | 'delete' | 'none';
+
 const LinkCard = ({ id, title, url, isVisible }: Props) => {
-    const [deleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-    const openDeleteLinkModal = (): void => setIsDeleteModalOpen(true);
-    const closeDeleteLinkModal = (): void => setIsDeleteModalOpen(false);
+    const [openModal, setOpenModal] = useState<OpenModal>('none');
+    const openDeleteLinkModal = (): void => setOpenModal('delete');
+    const openEditLinkModal = (): void => setOpenModal('edit');
+    const closeModal = (): void => setOpenModal('none');
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     const setLinkVisible = (): void => { };
     return (
@@ -26,7 +30,7 @@ const LinkCard = ({ id, title, url, isVisible }: Props) => {
                     <div className="flex flex-row gap-x-4">
                         <div className="flex flex-row flex-1 gap-x-2">
                             <span className="font-bold text-black text-md">{title}</span>
-                            <span className='cursor-pointer'><PencilSquareIcon className='w-5 h-5' /></span>
+                            <span className='cursor-pointer' onClick={openEditLinkModal}><PencilSquareIcon className='w-5 h-5' /></span>
                         </div>
                         <Switch
                             checked={isVisible}
@@ -48,7 +52,8 @@ const LinkCard = ({ id, title, url, isVisible }: Props) => {
                 </div>
             </div>
             {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-            <DeleteLinkModal title={title} isOpen={deleteModalOpen} onClose={closeDeleteLinkModal} onDelete={() => { }} />
+            <DeleteLinkModal id={id} title={title} isOpen={openModal === 'delete'} onClose={closeModal} onDelete={() => { }} />
+            <EditLinkModal id={id} title={title} url={url} isOpen={openModal === 'edit'} onClose={closeModal} />
         </>
     )
 }

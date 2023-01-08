@@ -3,13 +3,14 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import React, { Fragment } from 'react'
 
 type Props = {
+    id: string;
     title: string;
     isOpen: boolean;
     onClose: () => void;
     onDelete: () => void;
 }
 
-const DeleteLinkModal = ({ title, isOpen, onClose, onDelete }: Props) => {
+const DeleteLinkModal = ({ id, title, isOpen, onClose, onDelete }: Props) => {
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -38,7 +39,7 @@ const DeleteLinkModal = ({ title, isOpen, onClose, onDelete }: Props) => {
                         >
                             <Dialog.Panel className="flex flex-col w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-center align-middle shadow-xl transition-all">
                                 <div className="flex flex-row w-full gap-x-4">
-                                    <ExclamationTriangleIcon className='w-12 h-12 text-red-600 bg-red-300 rounded-full p-2' />
+                                    <ExclamationTriangleIcon className='w-12 h-12 text-red-600 bg-red-200 rounded-full p-2' />
                                     <div>
                                         <Dialog.Title
                                             as="h3"
