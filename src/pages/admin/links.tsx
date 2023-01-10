@@ -5,6 +5,11 @@ import AddLinkModal from '../../components/addLinkModal'
 import { useState } from 'react'
 import LinkCard from '../../components/linkCard'
 import { PlusIcon } from '@heroicons/react/24/outline'
+import { requireAuth } from '../../utils/requireAuth'
+
+export const getServerSideProps = requireAuth(async (_) => {
+    return { props: {} };
+}, '/admin/links');
 
 const Links: NextPage = () => {
     const [addLinkModalOpen, setIsAddLinkModalOpen] = useState<boolean>(false);
