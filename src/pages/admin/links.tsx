@@ -30,7 +30,7 @@ const Links: NextPage = () => {
                             </div>
                         </section>
                     </div>
-                    <div className='flex-1'>
+                    <div className='sm:flex-1'>
                         <PagePreview />
                     </div>
                 </div>

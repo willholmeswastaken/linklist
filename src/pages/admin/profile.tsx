@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import LoggedInHeader from '../components/loggedInHeader'
+import LoggedInHeader from '../../components/loggedInHeader'
 
 const Profile: NextPage = () => {
     return (
