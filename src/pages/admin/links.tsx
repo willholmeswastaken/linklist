@@ -17,10 +17,11 @@ const Links: NextPage = () => {
     const closeAddLinkModal = (): void => setIsAddLinkModalOpen(false);
     return (
         <>
+
             <div className='flex flex-col gap-y-4'>
                 <LoggedInHeader />
-                <div className="flex flex-row">
-                    <div className="flex-grow">
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="col-span-2 sm:col-span-1">
                         <section className="flex flex-col w-full p-10">
                             <button
                                 type='button'
@@ -35,9 +36,7 @@ const Links: NextPage = () => {
                             </div>
                         </section>
                     </div>
-                    <div className='sm:flex-1'>
-                        <PagePreview />
-                    </div>
+                    <PagePreview />
                 </div>
             </div>
             <AddLinkModal isOpen={addLinkModalOpen} closeModal={closeAddLinkModal} />

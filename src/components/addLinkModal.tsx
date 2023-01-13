@@ -60,7 +60,6 @@ const AddLinkModal = ({ isOpen, closeModal }: Props) => {
                                 <div className="flex flex-col my-6 gap-y-4">
                                     <input type='text' placeholder='URL' value={linkUrl} onChange={onLinkUrlChange} className='w-full h-11 p-2 bg-gray-200 text-gray-600 placeholder:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 rounded-md' />
                                     <input type='text' placeholder='Title' value={linkTitle} onChange={onLinkTitleChange} className='w-full h-11 p-2 bg-gray-200 text-gray-600 placeholder:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 rounded-md' />
-                                    {/* <button type='button' className='w-20 h-12 cursor-default bg-gray-200 text-gray-600 rounded-full justify-self-center self-center'>Add</button> */}
                                 </div>
 
                                 <div className="flex flex-row w-full mt-4 justify-end gap-x-4">
