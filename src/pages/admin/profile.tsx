@@ -76,7 +76,6 @@ const Profile: NextPage<UserProfile> = ({ profileImageUrl, username, bio }) => {
                                 )}
                             </Formik>
                         </div>
-                        {/* Add formik */}
                     </section>
                 </div>
                 <PagePreview />

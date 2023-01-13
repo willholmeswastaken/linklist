@@ -3,17 +3,16 @@ import { EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/re
 import { useState } from 'react'
 import DeleteLinkModal from './deleteLinkModal';
 import EditLinkModal from './editLinkModal';
+import type { Link } from '../types/Link';
 
 type Props = {
-    id: string;
-    title: string;
-    url: string;
+    link: Link;
     isVisible: boolean;
 }
 
 type OpenModal = 'edit' | 'delete' | 'none';
 
-const LinkCard = ({ id, title, url, isVisible }: Props) => {
+const LinkCard = ({ link, isVisible }: Props) => {
     const [openModal, setOpenModal] = useState<OpenModal>('none');
     const openDeleteLinkModal = (): void => setOpenModal('delete');
     const openEditLinkModal = (): void => setOpenModal('edit');
@@ -29,7 +28,7 @@ const LinkCard = ({ id, title, url, isVisible }: Props) => {
                 <div className='flex flex-col w-full gap-y-1'>
                     <div className="flex flex-row gap-x-4">
                         <div className="flex flex-row flex-1 gap-x-2">
-                            <span className="font-bold text-black text-md">{title}</span>
+                            <span className="font-bold text-black text-md">{link.title}</span>
                             <span className='cursor-pointer' onClick={openEditLinkModal}><PencilSquareIcon className='w-5 h-5' /></span>
                         </div>
                         <Switch
@@ -47,13 +46,13 @@ const LinkCard = ({ id, title, url, isVisible }: Props) => {
                         </Switch>
                     </div>
 
-                    <span className="text-gray-800 text-sm">{url}</span>
+                    <span className="text-gray-800 text-sm">{link.url}</span>
                     <span className='justify-self-end self-end text-gray-500 cursor-pointer' onClick={openDeleteLinkModal}><TrashIcon className='w-5 h-5' /></span>
                 </div>
             </div>
             {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-            <DeleteLinkModal id={id} title={title} isOpen={openModal === 'delete'} onClose={closeModal} onDelete={() => { }} />
-            <EditLinkModal id={id} title={title} url={url} isOpen={openModal === 'edit'} onClose={closeModal} />
+            <DeleteLinkModal id={link.id} title={link.title} isOpen={openModal === 'delete'} onClose={closeModal} onDelete={() => { }} />
+            <EditLinkModal link={link} isOpen={openModal === 'edit'} onClose={closeModal} />
         </>
     )
 }

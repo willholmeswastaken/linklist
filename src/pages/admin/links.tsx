@@ -32,7 +32,7 @@ const Links: NextPage = () => {
                                 </span>
                             </button>
                             <div className="flex flex-col mt-10">
-                                <LinkCard id='test' title='Wills link' url='https://willholmes.dev' isVisible />
+                                <LinkCard link={{ id: 'test', order: 0, title: 'My website', url: 'https://willholmes.dev' }} isVisible />
                             </div>
                         </section>
                     </div>
