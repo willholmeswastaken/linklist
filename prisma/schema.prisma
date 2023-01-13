@@ -48,13 +48,14 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?       @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  UserProfile   UserProfile[]
 }
 
 model VerificationToken {
@@ -63,4 +64,23 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model UserProfile {
+  id           String  @id @default(cuid())
+  username     String
+  bio          String?
+  displayImage String?
+  links        Link[]
+  userId       String
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Link {
+  id            String      @id @default(cuid())
+  order         Int
+  title         String
+  url           String
+  userProfileId String
+  user          UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
 }

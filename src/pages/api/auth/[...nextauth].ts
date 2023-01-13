@@ -17,7 +17,23 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  // Configure one or more authentication providers
+  events: {
+    async createUser({ user }) {
+      const userProfile = await prisma.userProfile.findFirst({
+        where: {
+          userId: user.id,
+        },
+      });
+      if (!userProfile) {
+        await prisma.userProfile.create({
+          data: {
+            username: user.name!,
+            userId: user.id,
+          },
+        });
+      }
+    },
+  },
   adapter: PrismaAdapter(prisma),
   providers: [
     DiscordProvider({
