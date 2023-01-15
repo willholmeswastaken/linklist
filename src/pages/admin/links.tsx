@@ -10,6 +10,7 @@ import { prisma } from "../../server/db/client";
 import { getSession } from 'next-auth/react'
 import { useUserProfileStore } from '../../userProfileStore'
 import type { UserProfileWithLinks } from '../../types/UserProfileWIthLinks'
+import { trpc } from '../../utils/trpc'
 
 type Props = {
     userProfile: UserProfileWithLinks;
@@ -17,7 +18,6 @@ type Props = {
 
 export const getServerSideProps = requireAuth(async (ctx) => {
     const session = await getSession({ ctx });
-    console.log(session);
     const userProfile = await prisma.userProfile.findFirst({
         where: {
             userId: session?.user?.id
@@ -34,15 +34,22 @@ export const getServerSideProps = requireAuth(async (ctx) => {
 }, '/admin/links');
 
 const Links: NextPage<Props> = ({ userProfile }) => {
-    // TODO: Create trpc query / mutation (s) for all interactions i.e. add, edit, delete links, get profile, update profile.
     const [addLinkModalOpen, setIsAddLinkModalOpen] = useState<boolean>(false);
     const openAddLinkModal = (): void => setIsAddLinkModalOpen(true);
     const closeAddLinkModal = (): void => setIsAddLinkModalOpen(false);
 
     const userProfileState = useUserProfileStore();
     const displayProfile = useMemo<UserProfileWithLinks>(() => userProfileState.userProfile ?? userProfile, [userProfileState, userProfile]);
+
+    trpc.userProfile.getUserProfile.useQuery(undefined, {
+        onSuccess(data) {
+            if (!data) return;
+            userProfileState.setUserProfile(data);
+        },
+    });
+
     useEffect(() => {
-        if (userProfile !== userProfileState.userProfile)
+        if (userProfileState.userProfile === null)
             userProfileState.setUserProfile(userProfile);
     }, [userProfile, userProfileState]);
 
@@ -61,12 +68,17 @@ const Links: NextPage<Props> = ({ userProfile }) => {
                                     <PlusIcon className='w-6 h-6' /> Add Link
                                 </span>
                             </button>
-                            <div className="flex flex-col mt-10">
+                            <div className="flex flex-col mt-10 gap-y-3">
                                 {
-                                    displayProfile.links.length > 0 &&
-                                    displayProfile.links.map((link) => (
-                                        <LinkCard key={link.id} link={link} isVisible />
-                                    ))
+                                    displayProfile.links.length > 0 ?
+                                        displayProfile.links.map((link) => (
+                                            <LinkCard key={link.id} link={link} />
+                                        ))
+                                        : (
+                                            <div className="flex flex-row bg-white rounded-lg w-full h-26 px-2 py-4 drop-shadow-sm gap-x-2 justify-center">
+                                                No Links Created, click the button above to get started!
+                                            </div>
+                                        )
                                 }
                             </div>
                         </section>

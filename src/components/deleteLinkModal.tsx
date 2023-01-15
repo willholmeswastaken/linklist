@@ -1,16 +1,31 @@
 import { Transition, Dialog } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
-import React, { Fragment } from 'react'
+import { Fragment } from 'react'
+import { trpc } from '../utils/trpc';
+import { toast } from 'react-toastify';
 
 type Props = {
     id: string;
     title: string;
     isOpen: boolean;
     onClose: () => void;
-    onDelete: () => void;
 }
 
-const DeleteLinkModal = ({ id, title, isOpen, onClose, onDelete }: Props) => {
+const DeleteLinkModal = ({ id, title, isOpen, onClose }: Props) => {
+    const queryContext = trpc.useContext();
+    const deleteLinkMutation = trpc.links.deleteLink.useMutation({
+        onSuccess() {
+            queryContext.userProfile.getUserProfile.invalidate();
+            toast.success('Link deleted successfully');
+            onClose();
+        },
+        onError() {
+            toast.error('Unable to delete link, try again later.');
+        }
+    });
+    const onDelete = async (): Promise<void> => {
+        await deleteLinkMutation.mutateAsync(id);
+    }
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={onClose}>

@@ -4,6 +4,11 @@ import type { Link } from '../types/Link';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { title } from 'process';
 import InputFormField from './Formik/InputFormField';
+import { trpc } from '../utils/trpc';
+import { toast } from 'react-toastify';
+import type { UpsertLink } from '../types/UpsertedLink';
+import { toFormikValidationSchema } from 'zod-formik-adapter';
+import { z } from 'zod';
 
 type Props = {
     link: Link;
@@ -12,6 +17,21 @@ type Props = {
 }
 
 const EditLinkModal = ({ link, isOpen, onClose }: Props) => {
+    const queryContext = trpc.useContext();
+    const addLinkMutation = trpc.links.updateLink.useMutation({
+        onSuccess() {
+            queryContext.userProfile.getUserProfile.invalidate();
+            onClose();
+            toast.success('Link updated successfully');
+        },
+        onError() {
+            toast.error('Unable to add link, try again later.');
+        }
+    });
+
+    const onLinkFormSubmit = async (upsertedLink: UpsertLink): Promise<void> => {
+        await addLinkMutation.mutateAsync({ id: link.id, order: link.order, ...upsertedLink });
+    }
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -47,12 +67,11 @@ const EditLinkModal = ({ link, isOpen, onClose }: Props) => {
                                 </Dialog.Title>
                                 <div className="flex flex-col my-6 gap-y-4">
                                     <Formik
-                                        initialValues={{ url: link.url, title: link.title }}
-                                        onSubmit={e => {
-                                            console.log(e);
-                                        }}
+                                        initialValues={{ url: link.url, title: link.title } as UpsertLink}
+                                        validationSchema={toFormikValidationSchema(z.object({ url: z.string().url('Must be a valid url'), title: z.string() }))}
+                                        onSubmit={onLinkFormSubmit}
                                     >
-                                        {({ isSubmitting }) => (
+                                        {() => (
                                             <Form className='flex flex-col w-full gap-y-4'>
                                                 <div>
                                                     <label htmlFor='url' className='text-sm mb-1'>Url</label>
@@ -60,7 +79,7 @@ const EditLinkModal = ({ link, isOpen, onClose }: Props) => {
                                                         type="text"
                                                         name="url"
                                                         component={InputFormField} />
-                                                    <ErrorMessage name="url" component="div" />
+                                                    <ErrorMessage name="url" component="div" className='text-xs italic text-red-500' />
                                                 </div>
 
                                                 <div>
@@ -69,7 +88,7 @@ const EditLinkModal = ({ link, isOpen, onClose }: Props) => {
                                                         type="text"
                                                         name="title"
                                                         component={InputFormField} />
-                                                    <ErrorMessage name="title" component="div" />
+                                                    <ErrorMessage name="title" component="div" className='text-xs italic text-red-500' />
                                                 </div>
 
                                                 <div className="flex flex-row w-full mt-4 justify-end gap-x-4">

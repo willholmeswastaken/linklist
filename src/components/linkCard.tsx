@@ -3,22 +3,34 @@ import { EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/re
 import { useState } from 'react'
 import DeleteLinkModal from './deleteLinkModal';
 import EditLinkModal from './editLinkModal';
-import type { Link } from '../types/Link';
+import type { Link } from '@prisma/client';
+import { toast } from 'react-toastify';
+import { trpc } from '../utils/trpc';
 
 type Props = {
     link: Link;
-    isVisible: boolean;
 }
 
 type OpenModal = 'edit' | 'delete' | 'none';
 
-const LinkCard = ({ link, isVisible }: Props) => {
+const LinkCard = ({ link }: Props) => {
     const [openModal, setOpenModal] = useState<OpenModal>('none');
+    const queryContext = trpc.useContext();
+    const toggleLinkVisibilityMutation = trpc.links.toggleLink.useMutation({
+        onSuccess() {
+            queryContext.userProfile.getUserProfile.invalidate();
+        },
+        onError() {
+            toast.error('Unable to toggle link visibility, try again later.');
+        }
+    });
+
+    const onSetLinkVisibility = async (): Promise<void> => {
+        await toggleLinkVisibilityMutation.mutateAsync({ id: link.id, isVisible: !link.isVisible });
+    }
     const openDeleteLinkModal = (): void => setOpenModal('delete');
     const openEditLinkModal = (): void => setOpenModal('edit');
     const closeModal = (): void => setOpenModal('none');
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    const setLinkVisible = (): void => { };
     return (
         <>
             <div className="flex flex-row bg-white rounded-lg w-full h-26 px-2 py-4 drop-shadow-sm gap-x-2">
@@ -32,15 +44,15 @@ const LinkCard = ({ link, isVisible }: Props) => {
                             <span className='cursor-pointer' onClick={openEditLinkModal}><PencilSquareIcon className='w-5 h-5' /></span>
                         </div>
                         <Switch
-                            checked={isVisible}
-                            onChange={setLinkVisible}
-                            className={`${isVisible ? 'bg-[#30a72d]' : 'bg-gray-800'}
+                            checked={link.isVisible}
+                            onChange={onSetLinkVisibility}
+                            className={`${link.isVisible ? 'bg-[#30a72d]' : 'bg-gray-800'}
           relative inline-flex h-[22px] w-[40px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
                         >
                             <span className="sr-only">Use setting</span>
                             <span
                                 aria-hidden="true"
-                                className={`${isVisible ? 'translate-x-4' : 'translate-x-0'}
+                                className={`${link.isVisible ? 'translate-x-4' : 'translate-x-0'}
             pointer-events-none inline-block h-[18px] w-[20px] transform rounded-full bg-white ring-0 transition duration-200 ease-in-out`}
                             />
                         </Switch>
@@ -51,7 +63,7 @@ const LinkCard = ({ link, isVisible }: Props) => {
                 </div>
             </div>
             {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-            <DeleteLinkModal id={link.id} title={link.title} isOpen={openModal === 'delete'} onClose={closeModal} onDelete={() => { }} />
+            <DeleteLinkModal id={link.id} title={link.title} isOpen={openModal === 'delete'} onClose={closeModal} />
             <EditLinkModal link={link} isOpen={openModal === 'edit'} onClose={closeModal} />
         </>
     )

@@ -2,6 +2,11 @@ import { Transition, Dialog } from '@headlessui/react';
 import { Fragment } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import InputFormField from './Formik/InputFormField';
+import { trpc } from '../utils/trpc';
+import { toFormikValidationSchema } from 'zod-formik-adapter';
+import { z } from 'zod';
+import { toast } from 'react-toastify';
+import type { UpsertLink } from '../types/UpsertedLink';
 
 type Props = {
     isOpen: boolean;
@@ -9,6 +14,21 @@ type Props = {
 }
 
 const AddLinkModal = ({ isOpen, closeModal }: Props) => {
+    const queryContext = trpc.useContext();
+    const addLinkMutation = trpc.links.addLink.useMutation({
+        onSuccess() {
+            queryContext.userProfile.getUserProfile.invalidate();
+            closeModal();
+            toast.success('Link added successfully');
+        },
+        onError() {
+            toast.error('Unable to add link, try again later.');
+        }
+    });
+
+    const onLinkFormSubmit = async (link: UpsertLink): Promise<void> => {
+        await addLinkMutation.mutateAsync({ ...link });
+    }
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -44,20 +64,20 @@ const AddLinkModal = ({ isOpen, closeModal }: Props) => {
                                 </Dialog.Title>
                                 <div className="flex flex-col my-6 gap-y-4">
                                     <Formik
-                                        initialValues={{ url: '', title: '' }}
-                                        onSubmit={e => {
-                                            console.log(e);
-                                        }}
+                                        initialValues={{ url: '', title: '' } as UpsertLink}
+                                        validationSchema={toFormikValidationSchema(z.object({ url: z.string().url('Must be a valid url'), title: z.string() }))}
+                                        onSubmit={onLinkFormSubmit}
                                     >
-                                        {({ isSubmitting }) => (
+                                        {() => (
                                             <Form className='flex flex-col w-full gap-y-4'>
                                                 <div>
                                                     <label htmlFor='url' className='text-sm mb-1'>Url</label>
                                                     <Field
                                                         type="text"
                                                         name="url"
+                                                        disabled={addLinkMutation.isLoading}
                                                         component={InputFormField} />
-                                                    <ErrorMessage name="url" component="div" />
+                                                    <ErrorMessage name="url" component="div" className='text-xs italic text-red-500' />
                                                 </div>
 
                                                 <div>
@@ -65,8 +85,9 @@ const AddLinkModal = ({ isOpen, closeModal }: Props) => {
                                                     <Field
                                                         type="text"
                                                         name="title"
+                                                        disabled={addLinkMutation.isLoading}
                                                         component={InputFormField} />
-                                                    <ErrorMessage name="title" component="div" />
+                                                    <ErrorMessage name="title" component="div" className='text-xs italic text-red-500' />
                                                 </div>
 
                                                 <div className="flex flex-row w-full mt-4 justify-end gap-x-4">
@@ -79,8 +100,8 @@ const AddLinkModal = ({ isOpen, closeModal }: Props) => {
                                                     </button>
                                                     <button
                                                         type="submit"
+                                                        disabled={addLinkMutation.isLoading}
                                                         className="inline-flex justify-center rounded-md border border-transparent disabled:cursor-default disabled:bg-gray-200 disabled:text-gray-900 disabled:hover:bg-gray-300 bg-green-200 duration-300 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-300 cursor:pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                                        onClick={closeModal}
                                                     >
                                                         Add
                                                     </button>

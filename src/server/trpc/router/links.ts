@@ -49,6 +49,23 @@ export const linksRouter = router({
         },
       });
     }),
+  toggleLink: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        isVisible: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.link.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          isVisible: input.isVisible,
+        },
+      });
+    }),
   deleteLink: protectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {

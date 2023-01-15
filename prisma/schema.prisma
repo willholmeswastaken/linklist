@@ -68,7 +68,8 @@ model VerificationToken {
 
 model UserProfile {
   id           String  @id @default(cuid())
-  username     String
+  username     String  @unique
+  title        String
   bio          String?
   displayImage String?
   links        Link[]
@@ -81,6 +82,7 @@ model Link {
   order         Int
   title         String
   url           String
+  isVisible     Boolean     @default(true)
   userProfileId String
   user          UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
 }
