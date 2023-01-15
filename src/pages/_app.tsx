@@ -12,6 +12,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  // TODO: Add dark mode
   return (
     <SessionProvider session={session}>
       <div className="bg-[#F5F6F7] min-h-screen w-screen">
