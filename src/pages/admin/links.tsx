@@ -55,7 +55,7 @@ const Links: NextPage<Props> = ({ userProfile }) => {
 
     return (
         <>
-            <div className='flex flex-col gap-y-4'>
+            <div className='flex flex-col gap-y-4 p-2 md:p-6'>
                 <LoggedInHeader />
                 <div className="grid grid-cols-2 gap-4">
                     <div className="col-span-2 sm:col-span-1">

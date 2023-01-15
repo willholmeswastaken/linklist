@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { router, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
+import { isValidUsername } from "../../../utils/usernameChecker";
 
 export const userProfileRouter = router({
   getUserProfile: protectedProcedure.query(async ({ ctx }) => {
@@ -39,6 +40,14 @@ export const userProfileRouter = router({
           code: "BAD_REQUEST",
           message: "Username is already taken, choose another.",
           cause: "Duplicate username",
+        });
+      }
+      if (!isValidUsername(input.username)) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message:
+            "Username violates our acceptable usernames, choose another.",
+          cause: "Acceptable username violation",
         });
       }
       await ctx.prisma.userProfile.update({

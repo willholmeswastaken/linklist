@@ -3,9 +3,10 @@ import type { UserProfileWithLinks } from "../types/UserProfileWIthLinks";
 
 type Props = {
     userProfile: UserProfileWithLinks;
+    isPreview?: boolean;
 }
 
-const UserPage = ({ userProfile }: Props) => {
+const UserPage = ({ userProfile, isPreview = true }: Props) => {
     const displayPicture = useMemo<JSX.Element>(() => {
         return userProfile.displayImage
             ? <img src={userProfile.displayImage} alt='profile picture' className='w-20 h-20 rounded-full' />
@@ -14,7 +15,7 @@ const UserPage = ({ userProfile }: Props) => {
             </div>
     }, [userProfile])
     return (
-        <div className="w-full h-full bg-gradient-to-b from-gray-200 to-gray-300 rounded-2xl overflow-y-scroll">
+        <div className={`w-full h-full bg-gradient-to-b from-gray-200 to-gray-300 ${isPreview ? 'rounded-2xl' : ''} overflow-y-scroll`}>
             <div className="flex flex-col pt-10 pb-4 px-4 items-center gap-y-3">
                 {displayPicture}
                 <div className="flex flex-col items-center">
@@ -27,7 +28,7 @@ const UserPage = ({ userProfile }: Props) => {
                         <a
                             key={x.id}
                             href={x.url}
-                            className="flex bg-white rounded-[0.25rem] drop-shadow-md h-11 w-full text-center text-xs items-center justify-center cursor-pointer transition ease-in-out duration-300 hover:scale-105 ">
+                            className={`flex bg-white rounded-[0.25rem] drop-shadow-md h-11 ${isPreview ? 'w-full' : 'w-full md:w-1/2 lg:w-5/8 2xl:w-1/4'} w-full text-center text-xs items-center justify-center cursor-pointer transition ease-in-out duration-300 hover:scale-105`}>
                             {x.title}
                         </a>
                     ))

@@ -3,9 +3,11 @@ import DiscordProvider from "next-auth/providers/discord";
 import GithubProvider from "next-auth/providers/github";
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import uuid from "uuid";
 
 import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db/client";
+import { isValidUsername } from "../../../utils/usernameChecker";
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
@@ -25,11 +27,14 @@ export const authOptions: NextAuthOptions = {
         },
       });
       if (!userProfile) {
+        const targetUsername = (
+          isValidUsername(user!.name as string) ? user!.name : uuid.v4()
+        ) as string;
         await prisma.userProfile.create({
           data: {
-            username: user!.name as string,
+            username: targetUsername,
             userId: user.id,
-            title: user!.name as string,
+            title: targetUsername,
           },
         });
       }
