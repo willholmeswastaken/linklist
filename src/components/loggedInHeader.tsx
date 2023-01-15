@@ -1,4 +1,4 @@
-import { Square3Stack3DIcon, UserCircleIcon } from '@heroicons/react/24/outline'
+import { ChartBarIcon, Square3Stack3DIcon, UserCircleIcon } from '@heroicons/react/24/outline'
 import HeaderItem from './headerItem'
 import type { Route } from '../types/route'
 import { Menu, Transition } from '@headlessui/react'
@@ -16,6 +16,11 @@ export const routes: Array<Route> = [
         pathname: '/admin/profile',
         icon: <UserCircleIcon className='w-full h-full' />
     },
+    {
+        title: 'Analytics',
+        pathname: '/admin/analytics',
+        icon: <ChartBarIcon className='w-full h-full' />
+    }
 ]
 
 

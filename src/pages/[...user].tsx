@@ -42,6 +42,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
 }
 
 const UserProfilePage: NextPage<Props> = ({ userProfile }) => {
+    // TODO: Register page visit
     return (
         <>
             <Head>

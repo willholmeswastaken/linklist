@@ -77,6 +77,8 @@ const Profile: NextPage<Props> = ({ userProfile }) => {
             userProfileState.setUserProfile(userProfile);
     }, [userProfile, userProfileState]);
 
+    // TODO: Add color themeing (choose gradient or block and text color)
+
     return (
         <div className='flex flex-col gap-y-4 p-2 md:p-6'>
             <LoggedInHeader />
