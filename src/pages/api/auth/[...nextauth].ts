@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
   },
   events: {
     async createUser({ user }) {
-      const userProfile = await prisma.userProfile.findFirst({
+      const userProfile = await prisma.userProfile.findUnique({
         where: {
           userId: user.id,
         },

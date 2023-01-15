@@ -2,14 +2,12 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { signIn, useSession } from "next-auth/react";
 
-import { trpc } from "../utils/trpc";
 import Header from "../components/header";
 import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
   const { push } = useRouter();
-  const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
   const onGetStarted = () => {
     if (sessionData?.user !== undefined) {
       push('/admin/links');

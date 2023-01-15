@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import PagePreviewModal from './pagePreviewModal';
 import UserPage from './userPage'
+import type { UserProfileWithLinks } from '../types/UserProfileWIthLinks';
 
-const PagePreview = () => {
+type Props = {
+    userProfile: UserProfileWithLinks;
+}
+
+const PagePreview = ({ userProfile }: Props) => {
     const [isPreviewModalOpen, setIsPreviewModalOpen] = useState<boolean>(false);
 
     const openPreviewModal = (): void => setIsPreviewModalOpen(true);
@@ -12,7 +17,7 @@ const PagePreview = () => {
         <>
             <div className="hidden sm:flex justify-center items-center p-10">
                 <div className='w-[250px] md:w-[300px] h-[600px] border-8 border-black rounded-3xl drop-shadow-md'>
-                    <UserPage profilePicture={'https://pbs.twimg.com/profile_images/1524749706915565569/0BjuY1n-_400x400.png'} username="devwillholmes" links={[{ id: 'test', title: 'Twitter', url: 'https://twitter.com/user/devwillholmes', order: 0 }]} />
+                    <UserPage userProfile={userProfile} />
                 </div>
             </div>
 
@@ -22,7 +27,7 @@ const PagePreview = () => {
                 Preview
             </button>
 
-            <PagePreviewModal isOpen={isPreviewModalOpen} onClose={closePreviewModal} />
+            <PagePreviewModal userProfile={userProfile} isOpen={isPreviewModalOpen} onClose={closePreviewModal} />
         </>
     )
 }

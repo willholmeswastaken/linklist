@@ -72,7 +72,7 @@ model UserProfile {
   bio          String?
   displayImage String?
   links        Link[]
-  userId       String
+  userId       String  @unique
   user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

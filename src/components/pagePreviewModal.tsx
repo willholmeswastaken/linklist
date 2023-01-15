@@ -1,13 +1,15 @@
 import { Transition, Dialog } from '@headlessui/react'
 import { Fragment } from 'react'
 import UserPage from './userPage'
+import type { UserProfileWithLinks } from '../types/UserProfileWIthLinks'
 
 type Props = {
+    userProfile: UserProfileWithLinks;
     isOpen: boolean;
     onClose: () => void;
 }
 
-const PagePreviewModal = ({ isOpen, onClose }: Props) => {
+const PagePreviewModal = ({ userProfile, isOpen, onClose }: Props) => {
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-10 sm:hidden" onClose={onClose}>
@@ -35,7 +37,7 @@ const PagePreviewModal = ({ isOpen, onClose }: Props) => {
                             leaveTo="opacity-0 scale-95"
                         >
                             <Dialog.Panel className="flex flex-col w-full min-h-full transform overflow-hidden rounded-2xl bg-white p-6 text-center shadow-xl transition-all">
-                                <UserPage profilePicture={'https://pbs.twimg.com/profile_images/1524749706915565569/0BjuY1n-_400x400.png'} username="devwillholmes" links={[{ id: 'test', title: 'Twitter', url: 'https://twitter.com/user/devwillholmes', order: 0 }]} />
+                                <UserPage userProfile={userProfile} />
 
                                 <div className="flex flex-row justify-end items-end mt-4 w-full gap-x-2">
                                     <button

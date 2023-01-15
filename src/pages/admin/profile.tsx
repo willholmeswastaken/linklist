@@ -5,24 +5,41 @@ import { requireAuth } from '../../utils/requireAuth';
 import PagePreview from '../../components/pagePreview';
 import InputFormField from '../../components/Formik/InputFormField';
 import TextAreaFormField from '../../components/Formik/TextAreaFormField';
+import { prisma } from "../../server/db/client";
+import type { UserProfileWithLinks } from '../../types/UserProfileWIthLinks';
+import { getSession } from 'next-auth/react';
+import { useUserProfileStore } from '../../userProfileStore';
+import { useMemo, useEffect } from 'react';
 
-type UserProfile = {
-    profileImageUrl: string;
-    username: string;
-    bio: string;
+type Props = {
+    userProfile: UserProfileWithLinks;
 }
 
-export const getServerSideProps = requireAuth(async (_) => {
+export const getServerSideProps = requireAuth(async (ctx) => {
+    const session = await getSession({ ctx });
+    console.log(session);
+    const userProfile = await prisma.userProfile.findFirst({
+        where: {
+            userId: session?.user?.id
+        },
+        include: {
+            links: true
+        }
+    });
     return {
         props: {
-            profileImageUrl: 'https://pbs.twimg.com/profile_images/1524749706915565569/0BjuY1n-_400x400.png',
-            username: 'devwillholmes',
-            bio: ''
-        } as UserProfile
+            userProfile
+        } as Props
     };
-}, '/admin/links');
+}, '/admin/profile');
 
-const Profile: NextPage<UserProfile> = ({ profileImageUrl, username, bio }) => {
+const Profile: NextPage<Props> = ({ userProfile }) => {
+    const userProfileState = useUserProfileStore();
+    const displayProfile = useMemo<UserProfileWithLinks>(() => userProfileState.userProfile ?? userProfile, [userProfileState, userProfile]);
+    useEffect(() => {
+        if (userProfile !== userProfileState.userProfile)
+            userProfileState.setUserProfile(userProfile);
+    }, [userProfile, userProfileState]);
     return (
         <div className='flex flex-col gap-y-4'>
             <LoggedInHeader />
@@ -32,7 +49,7 @@ const Profile: NextPage<UserProfile> = ({ profileImageUrl, username, bio }) => {
                         <h2 className='text-2xl font-semibold text-black'>Profile</h2>
                         <div className="flex flex-col w-full bg-white rounded-md p-4 gap-y-4">
                             <Formik
-                                initialValues={{ profileImageUrl, username, bio }}
+                                initialValues={{ profileImageUrl: displayProfile.displayImage ?? '', username: displayProfile.username, bio: displayProfile.bio ?? '' }}
                                 onSubmit={e => {
                                     console.log(e);
                                 }}
@@ -78,7 +95,7 @@ const Profile: NextPage<UserProfile> = ({ profileImageUrl, username, bio }) => {
                         </div>
                     </section>
                 </div>
-                <PagePreview />
+                <PagePreview userProfile={displayProfile} />
             </div>
         </div>
     )
