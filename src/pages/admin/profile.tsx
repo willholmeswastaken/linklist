@@ -133,7 +133,7 @@ const Profile: NextPage<Props> = ({ userProfile }) => {
                                         <button
                                             type='submit'
                                             disabled={updateUserProfileMutation.isLoading}
-                                            className='bg-blue-500 hover:bg-blue-600 rounded-full w-full h-12 text-white'>
+                                            className='bg-blue-600 hover:bg-blue-700 rounded-full w-full h-12 text-white'>
                                             Save
                                         </button>
                                     </Form>

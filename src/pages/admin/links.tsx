@@ -62,7 +62,7 @@ const Links: NextPage<Props> = ({ userProfile }) => {
                         <section className="flex flex-col w-full p-10">
                             <button
                                 type='button'
-                                className='bg-blue-500 hover:bg-blue-600 rounded-full w-full h-12 text-white'
+                                className='bg-blue-600 hover:bg-blue-700 rounded-full w-full h-12 text-white'
                                 onClick={openAddLinkModal}>
                                 <span className="flex flex-row items-center justify-center gap-x-1">
                                     <PlusIcon className='w-6 h-6' /> Add Link

@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import type { UserProfileWithLinks } from "../types/UserProfileWIthLinks";
+import Image from "next/image";
 
 type Props = {
     userProfile: UserProfileWithLinks;
@@ -9,7 +10,7 @@ type Props = {
 const UserPage = ({ userProfile, isPreview = true }: Props) => {
     const displayPicture = useMemo<JSX.Element>(() => {
         return userProfile.displayImage
-            ? <img src={userProfile.displayImage} alt='profile picture' className='w-20 h-20 rounded-full' />
+            ? <Image src={userProfile.displayImage} alt='profile picture' priority width={80} height={80} className='rounded-full' />
             : <div className="flex justify-center items-center bg-gray-500 rounded-full w-20 h-20 text-white text-center cursor-pointer text-3xl">
                 {userProfile.username.substring(0, 1).toUpperCase()}
             </div>
