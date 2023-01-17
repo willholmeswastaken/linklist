@@ -9,11 +9,12 @@ import { prisma } from "../../server/db/client";
 import type { UserProfileWithLinks } from '../../types/UserProfileWIthLinks';
 import { getSession } from 'next-auth/react';
 import { useUserProfileStore } from '../../userProfileStore';
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { trpc } from '../../utils/trpc';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
+import AiBioGenerationModal from '../../components/aiBioGenerationModal';
 
 type Props = {
     userProfile: UserProfileWithLinks;
@@ -45,6 +46,9 @@ type UserProfileUpdateForm = {
 
 const Profile: NextPage<Props> = ({ userProfile }) => {
     const queryContext = trpc.useContext();
+    const [showAiBioModal, setShowAiBioModal] = useState<boolean>(false);
+    const onShowAiBioModal = (): void => setShowAiBioModal(true);
+    const onCloseAiBioModal = (): void => setShowAiBioModal(false);
     const userProfileState = useUserProfileStore();
     const displayProfile = useMemo<UserProfileWithLinks>(() => userProfileState.userProfile ?? userProfile, [userProfileState, userProfile]);
 
@@ -128,6 +132,7 @@ const Profile: NextPage<Props> = ({ userProfile }) => {
                                                 name="bio"
                                                 component={TextAreaFormField} />
                                             <ErrorMessage name="bio" component="div" className='text-xs italic text-red-500' />
+                                            <button type='button' onClick={onShowAiBioModal} className='bg-transparent border border-gray-600 hover:bg-gray-700 rounded-md text-gray-600 duration-200 hover:text-white p-2'>Generate with AI</button>
                                         </div>
 
                                         <button
@@ -144,6 +149,7 @@ const Profile: NextPage<Props> = ({ userProfile }) => {
                 </div>
                 <PagePreview userProfile={displayProfile} />
             </div>
+            <AiBioGenerationModal isOpen={showAiBioModal} onClose={onCloseAiBioModal} />
         </div>
     )
 }

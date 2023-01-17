@@ -2,6 +2,7 @@ import { z } from "zod";
 import { router, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { isValidUsername } from "../../../utils/usernameChecker";
+import { Configuration, OpenAIApi } from "openai";
 
 export const userProfileRouter = router({
   getUserProfile: protectedProcedure.query(async ({ ctx }) => {
@@ -61,5 +62,21 @@ export const userProfileRouter = router({
           bio: input.bio,
         },
       });
+    }),
+  generateBio: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      const configuration = new Configuration({
+        apiKey: process.env.OPEN_AI_KEY ?? "",
+      });
+      const openai = new OpenAIApi(configuration);
+      const response = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: `Generate a public facing bio with a maximum of 20 words and base it on this context: ${input}`,
+        max_tokens: 200,
+        temperature: 0,
+      });
+
+      return response.data;
     }),
 });
