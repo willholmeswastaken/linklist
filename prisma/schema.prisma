@@ -75,6 +75,7 @@ model UserProfile {
   links        Link[]
   userId       String  @unique
   user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  visits       Visit[]
 }
 
 model Link {
@@ -85,4 +86,11 @@ model Link {
   isVisible     Boolean     @default(true)
   userProfileId String
   user          UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
+}
+
+model Visit {
+  id            String      @id @default(cuid())
+  timestamp     DateTime    @default(now())
+  userProfileId String
+  userProfile   UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
 }

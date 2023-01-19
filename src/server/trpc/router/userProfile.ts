@@ -71,7 +71,7 @@ export const userProfileRouter = router({
       });
       const openai = new OpenAIApi(configuration);
       const response = await openai.createCompletion({
-        model: "text-davinci-003",
+        model: "text-ada-001",
         prompt: `Generate a public facing bio with a maximum of 20 words and base it on this context: ${input}`,
         max_tokens: 200,
         temperature: 0,

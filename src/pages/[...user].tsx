@@ -34,6 +34,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
             notFound: true
         }
     }
+    await prisma.visit.create({
+        data: {
+            userProfileId: userProfile!.id,
+        }
+    });
     return {
         props: {
             userProfile
@@ -42,7 +47,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
 }
 
 const UserProfilePage: NextPage<Props> = ({ userProfile }) => {
-    // TODO: Register page visit
     return (
         <>
             <Head>
