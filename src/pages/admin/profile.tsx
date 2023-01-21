@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import { z } from 'zod';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import AiBioGenerationModal from '../../components/aiBioGenerationModal';
+import Head from 'next/head';
 
 type Props = {
     userProfile: UserProfileWithLinks;
@@ -84,73 +85,94 @@ const Profile: NextPage<Props> = ({ userProfile }) => {
     // TODO: Add color themeing (choose gradient or block and text color)
 
     return (
-        <div className='flex flex-col gap-y-4 p-2 md:p-6'>
-            <LoggedInHeader />
-            <div className="grid grid-cols-2 gap-4">
-                <div className="col-span-2 sm:col-span-1">
-                    <section className="flex flex-col w-full p-10 gap-y-4">
-                        <h2 className='text-2xl font-semibold text-black'>Profile</h2>
-                        <div className="flex flex-col w-full bg-white rounded-md p-4 gap-y-4">
-                            <Formik
-                                initialValues={{ displayImage: displayProfile.displayImage ?? '', username: displayProfile.username, title: displayProfile.title, bio: displayProfile.bio ?? '' } as UserProfileUpdateForm}
-                                validationSchema={toFormikValidationSchema(z.object({ displayImage: z.string().url('Must be a valid url').nullish(), username: z.string(), title: z.string(), bio: z.string().nullish() }))}
-                                onSubmit={onSubmitUserProfileForm}
-                            >
-                                {() => (
-                                    <Form className='flex flex-col w-full gap-y-4'>
-                                        <div>
-                                            <label htmlFor='username' className='text-sm mb-1'>Username</label>
-                                            <Field
-                                                type="text"
-                                                name="username"
-                                                component={InputFormField} />
-                                            <ErrorMessage name="username" component="div" className='text-xs italic text-red-500' />
-                                        </div>
+        <>
 
-                                        <div>
-                                            <label htmlFor='title' className='text-sm mb-1'>Title</label>
-                                            <Field
-                                                type="text"
-                                                name="title"
-                                                component={InputFormField} />
-                                            <ErrorMessage name="title" component="div" className='text-xs italic text-red-500' />
-                                        </div>
+            <Head>
+                <title>LinkList - Share your brand</title>
+                <meta name="title" content="LinkList - Share your brand" />
+                <meta name="description" content="LinkList is a free, open-source alternative to the freemium link sharing platforms that exist on the web today. Sign up and share your world to your audience!" />
 
-                                        <div>
-                                            <label htmlFor='displayImage' className='text-sm mb-1'>Profile Image Url</label>
-                                            <Field
-                                                type="text"
-                                                name="displayImage"
-                                                component={InputFormField} />
-                                            <ErrorMessage name="displayImage" component="div" className='text-xs italic text-red-500' />
-                                        </div>
+                <meta property="twitter:title" content="LinkList - Share your brand" />
+                <meta property="twitter:description" content="LinkList is a free, open-source alternative to the freemium link sharing platforms that exist on the web today. Sign up and share your world to your audience!" />
+                <meta property="twitter:image" content="https://linklist.vercel.app/og-image.png" />
+                <meta property="twitter:url" content="https://linklist.vercel.app" />
+                <meta property="twitter:card" content="summary_large_image" />
 
-                                        <div>
-                                            <label htmlFor='bio' className='text-sm mb-1'>Bio</label>
-                                            <Field
-                                                type="text"
-                                                name="bio"
-                                                component={TextAreaFormField} />
-                                            <ErrorMessage name="bio" component="div" className='text-xs italic text-red-500' />
-                                            <button type='button' onClick={onShowAiBioModal} className='bg-transparent border border-gray-600 hover:bg-gray-700 rounded-md text-gray-600 duration-200 hover:text-white p-2'>Generate with AI</button>
-                                        </div>
+                <meta property="og:title" content="LinkList - Share your brand" />
+                <meta property="og:description" content="LinkList is a free, open-source alternative to the freemium link sharing platforms that exist on the web today. Sign up and share your world to your audience!" />
+                <meta property="og:url" content="https://linklist.vercel.app" />
+                <meta property="og:image" content="https://linklist.vercel.app/og-image.png" />
+                <meta property="og:type" content="website" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+            <div className='flex flex-col gap-y-4 p-2 md:p-6'>
+                <LoggedInHeader />
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="col-span-2 sm:col-span-1">
+                        <section className="flex flex-col w-full p-10 gap-y-4">
+                            <h2 className='text-2xl font-semibold text-black'>Profile</h2>
+                            <div className="flex flex-col w-full bg-white rounded-md p-4 gap-y-4">
+                                <Formik
+                                    initialValues={{ displayImage: displayProfile.displayImage ?? '', username: displayProfile.username, title: displayProfile.title, bio: displayProfile.bio ?? '' } as UserProfileUpdateForm}
+                                    validationSchema={toFormikValidationSchema(z.object({ displayImage: z.string().url('Must be a valid url').nullish(), username: z.string(), title: z.string(), bio: z.string().nullish() }))}
+                                    onSubmit={onSubmitUserProfileForm}
+                                >
+                                    {() => (
+                                        <Form className='flex flex-col w-full gap-y-4'>
+                                            <div>
+                                                <label htmlFor='username' className='text-sm mb-1'>Username</label>
+                                                <Field
+                                                    type="text"
+                                                    name="username"
+                                                    component={InputFormField} />
+                                                <ErrorMessage name="username" component="div" className='text-xs italic text-red-500' />
+                                            </div>
 
-                                        <button
-                                            type='submit'
-                                            disabled={updateUserProfileMutation.isLoading}
-                                            className='bg-blue-600 hover:bg-blue-700 rounded-full w-full h-12 text-white'>
-                                            Save
-                                        </button>
-                                    </Form>
-                                )}
-                            </Formik>
-                        </div>
-                    </section>
+                                            <div>
+                                                <label htmlFor='title' className='text-sm mb-1'>Title</label>
+                                                <Field
+                                                    type="text"
+                                                    name="title"
+                                                    component={InputFormField} />
+                                                <ErrorMessage name="title" component="div" className='text-xs italic text-red-500' />
+                                            </div>
+
+                                            <div>
+                                                <label htmlFor='displayImage' className='text-sm mb-1'>Profile Image Url</label>
+                                                <Field
+                                                    type="text"
+                                                    name="displayImage"
+                                                    component={InputFormField} />
+                                                <ErrorMessage name="displayImage" component="div" className='text-xs italic text-red-500' />
+                                            </div>
+
+                                            <div>
+                                                <label htmlFor='bio' className='text-sm mb-1'>Bio</label>
+                                                <Field
+                                                    type="text"
+                                                    name="bio"
+                                                    component={TextAreaFormField} />
+                                                <ErrorMessage name="bio" component="div" className='text-xs italic text-red-500' />
+                                                <button type='button' onClick={onShowAiBioModal} className='bg-transparent border border-gray-600 hover:bg-gray-700 rounded-md text-gray-600 duration-200 hover:text-white p-2'>Generate with AI</button>
+                                            </div>
+
+                                            <button
+                                                type='submit'
+                                                disabled={updateUserProfileMutation.isLoading}
+                                                className='bg-blue-600 hover:bg-blue-700 rounded-full w-full h-12 text-white'>
+                                                Save
+                                            </button>
+                                        </Form>
+                                    )}
+                                </Formik>
+                            </div>
+                        </section>
+                    </div>
+                    <PagePreview userProfile={displayProfile} />
                 </div>
-                <PagePreview userProfile={displayProfile} />
+                <AiBioGenerationModal isOpen={showAiBioModal} onClose={onCloseAiBioModal} />
             </div>
-            <AiBioGenerationModal isOpen={showAiBioModal} onClose={onCloseAiBioModal} />
-        </div>
+        </>
     )
 }
 

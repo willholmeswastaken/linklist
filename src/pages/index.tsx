@@ -24,7 +24,20 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>LinkList - Share your brand</title>
-        <meta name="description" content="A lightweight, paywall free alternative to share your portfolio of links. Be up and running within 1 minute." />
+        <meta name="title" content="LinkList - Share your brand" />
+        <meta name="description" content="LinkList is a free, open-source alternative to the freemium link sharing platforms that exist on the web today. Sign up and share your world to your audience!" />
+
+        <meta property="twitter:title" content="LinkList - Share your brand" />
+        <meta property="twitter:description" content="LinkList is a free, open-source alternative to the freemium link sharing platforms that exist on the web today. Sign up and share your world to your audience!" />
+        <meta property="twitter:image" content="https://linklist.vercel.app/og-image.png" />
+        <meta property="twitter:url" content="https://linklist.vercel.app" />
+        <meta property="twitter:card" content="summary_large_image" />
+
+        <meta property="og:title" content="LinkList - Share your brand" />
+        <meta property="og:description" content="LinkList is a free, open-source alternative to the freemium link sharing platforms that exist on the web today. Sign up and share your world to your audience!" />
+        <meta property="og:url" content="https://linklist.vercel.app" />
+        <meta property="og:image" content="https://linklist.vercel.app/og-image.png" />
+        <meta property="og:type" content="website" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="p-4">
