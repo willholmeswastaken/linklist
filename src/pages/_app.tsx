@@ -12,10 +12,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  // TODO: Add dark mode
   return (
     <SessionProvider session={session}>
-      <div className="bg-[#F5F6F7] min-h-screen w-screen">
+      <div className="bg-[#F5F6F7] dark:bg-gray-800 min-h-screen w-screen">
         <ToastContainer />
         <Component {...pageProps} />
       </div>

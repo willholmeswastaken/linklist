@@ -52,18 +52,18 @@ const DeleteLinkModal = ({ id, title, isOpen, onClose }: Props) => {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="flex flex-col w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-center align-middle shadow-xl transition-all">
+                            <Dialog.Panel className="flex flex-col w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-brandDark p-6 text-center align-middle shadow-xl transition-all">
                                 <div className="flex flex-row w-full gap-x-4">
                                     <ExclamationTriangleIcon className='w-12 h-12 text-red-600 bg-red-200 rounded-full p-2' />
                                     <div>
                                         <Dialog.Title
                                             as="h3"
-                                            className="text-left text-lg font-medium leading-6 text-gray-900"
+                                            className="text-left text-lg font-medium leading-6 text-gray-900 dark:text-white"
                                         >
                                             Are you sure?
                                         </Dialog.Title>
                                         <div className="mt-2">
-                                            <p className="text-sm text-gray-500">
+                                            <p className="text-sm text-gray-500 dark:text-white">
                                                 This will delete your link <span className="font-bold">&quot;{title}&quot;</span>
                                             </p>
                                         </div>

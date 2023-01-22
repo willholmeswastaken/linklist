@@ -18,8 +18,6 @@ const Home: NextPage = () => {
     }
   };
 
-  // TODO: Update <Head> on each page to be the most SEO'd. Especially OG tags.
-
   return (
     <>
       <Head>
@@ -46,10 +44,10 @@ const Home: NextPage = () => {
       <div className="flex flex-col gap-y-10 items-center justify-center px-4 md:px-12 py-16">
         <div className="flex flex-col items-center gap-y-10">
           <div className="flex flex-col items-center gap-y-2 md:gap-y-6">
-            <h1 className="p-2 text-4xl sm:text-5xl lg:text-6xl text-center font-extrabold tracking-tight bg-gradient-to-br text-transparent from-black to-stone-500 bg-clip-text">
+            <h1 className="p-2 text-4xl sm:text-5xl lg:text-6xl text-center font-extrabold tracking-tight bg-gradient-to-br text-transparent from-black to-stone-500 dark:from-white dark:to-white bg-clip-text">
               The <span className="bg-gradient-to-br text-transparent from-brandBlue to-blue-500 bg-clip-text">open-source</span> <br />link displaying <span className="bg-gradient-to-br text-transparent from-brandBlue to-blue-500 bg-clip-text">App</span>.
             </h1>
-            <div className="text-gray-600 text-center md:text-xl max-w-[450px]">A lightweight, paywall free alternative to share your portfolio of links. Be up and running within 1 minute.</div>
+            <div className="text-gray-600 dark:text-white text-center md:text-xl max-w-[450px]">A lightweight, paywall free alternative to share your portfolio of links. Be up and running within 1 minute.</div>
           </div>
           <button
             className="text-white bg-blue-600 hover:bg-blue-700 duration-300 rounded-full w-fit px-10 py-3 text-xl font-semibold"

@@ -13,7 +13,7 @@ const HeaderItem = ({ name, url, icon }: Props) => {
     const isActiveLink = useMemo<boolean>(() => pathname.includes(url), [url, pathname]);
 
     return (
-        <Link className={`flex flex-row hover:bg-gray-200 items-center rounded-md p-2 cursor-pointer duration-300 gap-x-1 ${isActiveLink ? 'text-brandBlack' : 'text-gray-400'}`} href={url}>
+        <Link className={`flex flex-row hover:bg-gray-200 dark:hover:bg-[#3c3e4a] dark:hover:text-white items-center rounded-md p-2 cursor-pointer duration-300 gap-x-1 ${isActiveLink ? 'text-brandBlack dark:text-white' : 'text-gray-400'}`} href={url}>
             <span className="w-6 h-6">{icon}</span>
             {name}
         </Link>

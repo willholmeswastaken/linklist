@@ -3,6 +3,7 @@ import LoggedInHeader from '../../components/loggedInHeader'
 import Head from 'next/head'
 
 const Analytics: NextPage = () => {
+    // TODO: Add a chart here showing page views over the past 30 days
     return (
         <>
             <Head>

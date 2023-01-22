@@ -6,6 +6,7 @@ module.exports = {
       colors: {
         brandBlue: "#007efc",
         brandBlack: "#191c1f",
+        brandDark: "#444654",
       },
     },
   },

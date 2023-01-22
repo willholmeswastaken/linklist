@@ -27,9 +27,9 @@ export const routes: Array<Route> = [
 const LoggedInHeader = () => {
     return (
         <>
-            <div className="hidden md:flex md:flex-row md:gap-x-4 bg-white rounded-xl drop-shadow-sm p-4">
+            <div className="hidden md:flex md:flex-row md:gap-x-4 bg-white dark:bg-brandDark rounded-xl drop-shadow-sm p-4">
                 <div className="flex flex-1">
-                    <h1 className="text-4xl text-center font-extrabold tracking-tight text-[#191c1f] mr-12">
+                    <h1 className="text-4xl text-center font-extrabold tracking-tight text-[#191c1f] dark:text-white mr-12">
                         LinkList
                     </h1>
                     {

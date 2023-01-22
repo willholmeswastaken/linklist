@@ -55,10 +55,10 @@ const AddLinkModal = ({ isOpen, closeModal }: Props) => {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                            <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-brandDark p-6 text-left align-middle shadow-xl transition-all">
                                 <Dialog.Title
                                     as="h3"
-                                    className="text-lg font-medium leading-6 text-gray-900"
+                                    className="text-lg font-medium leading-6 text-gray-900 dark:text-white"
                                 >
                                     Add a link
                                 </Dialog.Title>
@@ -69,7 +69,7 @@ const AddLinkModal = ({ isOpen, closeModal }: Props) => {
                                         onSubmit={onLinkFormSubmit}
                                     >
                                         {() => (
-                                            <Form className='flex flex-col w-full gap-y-4'>
+                                            <Form className='flex flex-col w-full gap-y-4 dark:text-white text-black'>
                                                 <div>
                                                     <label htmlFor='url' className='text-sm mb-1'>Url</label>
                                                     <Field

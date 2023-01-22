@@ -33,14 +33,14 @@ const LinkCard = ({ link }: Props) => {
     const closeModal = (): void => setOpenModal('none');
     return (
         <>
-            <div className="flex flex-row bg-white rounded-lg w-full h-26 px-2 py-4 drop-shadow-sm gap-x-2">
+            <div className="flex flex-row bg-white dark:bg-brandDark rounded-lg w-full h-26 px-2 py-4 drop-shadow-sm gap-x-2">
                 <div className='justify-self-center self-center'>
-                    <EllipsisVerticalIcon className='w-6 h-6' />
+                    <EllipsisVerticalIcon className='w-6 h-6 dark:text-white' />
                 </div>
                 <div className='flex flex-col w-full gap-y-1'>
                     <div className="flex flex-row gap-x-4">
-                        <div className="flex flex-row flex-1 gap-x-2">
-                            <span className="font-bold text-black text-md">{link.title}</span>
+                        <div className="flex flex-row flex-1 gap-x-2 text-black dark:text-white">
+                            <span className="font-bold text-md">{link.title}</span>
                             <span className='cursor-pointer' onClick={openEditLinkModal}><PencilSquareIcon className='w-5 h-5' /></span>
                         </div>
                         <Switch
@@ -58,8 +58,8 @@ const LinkCard = ({ link }: Props) => {
                         </Switch>
                     </div>
 
-                    <span className="text-gray-800 text-sm">{link.url}</span>
-                    <span className='justify-self-end self-end text-gray-500 cursor-pointer' onClick={openDeleteLinkModal}><TrashIcon className='w-5 h-5' /></span>
+                    <span className="text-gray-800 dark:text-white text-sm">{link.url}</span>
+                    <span className='justify-self-end self-end text-gray-500 dark:text-white cursor-pointer' onClick={openDeleteLinkModal}><TrashIcon className='w-5 h-5' /></span>
                 </div>
             </div>
             {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}

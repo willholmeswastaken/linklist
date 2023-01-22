@@ -110,15 +110,15 @@ const Profile: NextPage<Props> = ({ userProfile }) => {
                 <div className="grid grid-cols-2 gap-4">
                     <div className="col-span-2 sm:col-span-1">
                         <section className="flex flex-col w-full p-10 gap-y-4">
-                            <h2 className='text-2xl font-semibold text-black'>Profile</h2>
-                            <div className="flex flex-col w-full bg-white rounded-md p-4 gap-y-4">
+                            <h2 className='text-2xl font-semibold text-black dark:text-white'>Profile</h2>
+                            <div className="flex flex-col w-full bg-white dark:bg-brandDark rounded-md p-4 gap-y-4">
                                 <Formik
                                     initialValues={{ displayImage: displayProfile.displayImage ?? '', username: displayProfile.username, title: displayProfile.title, bio: displayProfile.bio ?? '' } as UserProfileUpdateForm}
                                     validationSchema={toFormikValidationSchema(z.object({ displayImage: z.string().url('Must be a valid url').nullish(), username: z.string(), title: z.string(), bio: z.string().nullish() }))}
                                     onSubmit={onSubmitUserProfileForm}
                                 >
                                     {() => (
-                                        <Form className='flex flex-col w-full gap-y-4'>
+                                        <Form className='flex flex-col w-full gap-y-4 text-black dark:text-white'>
                                             <div>
                                                 <label htmlFor='username' className='text-sm mb-1'>Username</label>
                                                 <Field
@@ -153,7 +153,7 @@ const Profile: NextPage<Props> = ({ userProfile }) => {
                                                     name="bio"
                                                     component={TextAreaFormField} />
                                                 <ErrorMessage name="bio" component="div" className='text-xs italic text-red-500' />
-                                                <button type='button' onClick={onShowAiBioModal} className='bg-transparent border border-gray-600 hover:bg-gray-700 rounded-md text-gray-600 duration-200 hover:text-white p-2'>Generate with AI</button>
+                                                <button type='button' onClick={onShowAiBioModal} className='bg-transparent border border-gray-600 dark:border-white hover:bg-gray-700 dark:hover:bg-white rounded-md text-gray-600 dark:text-white dark:hover:text-brandDark duration-200 hover:text-white p-2'>Generate with AI</button>
                                             </div>
 
                                             <button
