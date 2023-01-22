@@ -1,9 +1,53 @@
-import type { NextPage } from 'next'
-import LoggedInHeader from '../../components/loggedInHeader'
+import type { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts'
+import { getSession } from 'next-auth/react'
+import dayjs from 'dayjs';
 
-const Analytics: NextPage = () => {
-    // TODO: Add a chart here showing page views over the past 30 days
+import { prisma } from "../../server/db/client";
+import LoggedInHeader from '../../components/loggedInHeader'
+import type { DisplayDateVisit } from '../../types/DateVisit';
+import { getDates } from '../../utils/dates';
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+    const session = await getSession({ ctx });
+    const startOfMonth = dayjs().subtract(1, 'month');
+    const visits = await prisma.visit.findMany({
+        where: {
+            userProfile: {
+                userId: session?.user?.id,
+            },
+            AND: {
+                timestamp: {
+                    gte: startOfMonth.toDate()
+                }
+            }
+        },
+    });
+
+    const dates = getDates(startOfMonth, dayjs());
+    const returnDates: Array<DisplayDateVisit> = [];
+    for (const dateVisit of dates) {
+        const startDate = dateVisit.date.startOf('day').toDate();
+        const endDate = dateVisit.date.endOf('day').toDate();
+        returnDates.push({
+            date: dateVisit.date.format('DD/MM'),
+            visits: visits.filter(x => x.timestamp >= startDate && x.timestamp <= endDate).length
+        });
+    }
+
+    return {
+        props: {
+            visits: returnDates
+        } as Props
+    };
+}
+
+type Props = {
+    visits: Array<DisplayDateVisit>;
+}
+
+const Analytics: NextPage<Props> = ({ visits }) => {
     return (
         <>
             <Head>
@@ -26,7 +70,18 @@ const Analytics: NextPage = () => {
             </Head>
             <div className='flex flex-col gap-y-4 p-2 md:p-6'>
                 <LoggedInHeader />
-                hi
+                <div className="flex flex-col w-full h-[500px] p-2 md:p-10 gap-y-4">
+                    <h2 className='text-2xl font-semibold text-black dark:text-white'>Visits in the last 30 days</h2>
+                    <ResponsiveContainer width="100%" height="100%">
+                        <BarChart width={500} height={300} data={visits} >
+                            <XAxis dataKey="date" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="visits" fill="#8884d8" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
             </div>
         </>
     )

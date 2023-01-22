@@ -36,7 +36,7 @@ const PagePreviewModal = ({ userProfile, isOpen, onClose }: Props) => {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="flex flex-col w-full min-h-full transform overflow-hidden rounded-2xl bg-white p-6 text-center shadow-xl transition-all">
+                            <Dialog.Panel className="flex flex-col w-full min-h-full transform overflow-hidden rounded-2xl bg-white dark:bg-brandDark p-6 text-center shadow-xl transition-all">
                                 <UserPage userProfile={userProfile} />
 
                                 <div className="flex flex-row justify-end items-end mt-4 w-full gap-x-2">

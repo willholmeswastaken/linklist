@@ -2,6 +2,7 @@ import { useState } from 'react';
 import PagePreviewModal from './pagePreviewModal';
 import UserPage from './userPage'
 import type { UserProfileWithLinks } from '../types/UserProfileWIthLinks';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 type Props = {
     userProfile: UserProfileWithLinks;
@@ -22,9 +23,9 @@ const PagePreview = ({ userProfile }: Props) => {
             </div>
 
             <button
-                className="sm:hidden absolute left-[50%] right-[50%] bottom-[50px] bg-blue-500 hover:bg-blue-600 text-white rounded-full w-fit py-4 px-8 drop-shadow-md ml-[-50px]"
+                className="sm:hidden fixed left-[92%] right-0 bottom-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full w-fit py-4 px-5 drop-shadow-md ml-[-50px]"
                 onClick={openPreviewModal}>
-                Preview
+                <MagnifyingGlassIcon className='w-6 h-6' />
             </button>
 
             <PagePreviewModal userProfile={userProfile} isOpen={isPreviewModalOpen} onClose={closePreviewModal} />

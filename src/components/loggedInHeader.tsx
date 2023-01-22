@@ -70,9 +70,9 @@ const LoggedInHeader = () => {
                     </Transition>
                 </Menu>
             </div>
-            <div className="flex flex-col md:hidden gap-y-3 bg-white rounded-xl drop-shadow-sm p-4">
+            <div className="flex flex-col md:hidden gap-y-3 bg-white dark:bg-brandDark rounded-xl drop-shadow-sm p-4">
                 <div className="flex flex-row">
-                    <h1 className="text-4xl font-extrabold tracking-tight text-[#191c1f] ml-2 flex-1">
+                    <h1 className="text-4xl font-extrabold tracking-tight text-[#191c1f] dark:text-white ml-2 flex-1">
                         LinkList
                     </h1>
                     <div className="flex justify-center items-center bg-gray-300 rounded-full w-9 h-9 text-white text-center cursor-pointer">
