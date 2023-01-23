@@ -17,7 +17,7 @@ const PagePreview = ({ userProfile }: Props) => {
     return (
         <>
             <div className="hidden sm:flex justify-center p-10">
-                <div className='w-[250px] md:w-[300px] h-[600px] border-8 border-black rounded-3xl drop-shadow-md'>
+                <div className='fixed w-[250px] md:w-[300px] h-[600px] border-8 border-black rounded-3xl drop-shadow-md'>
                     <UserPage userProfile={userProfile} />
                 </div>
             </div>
